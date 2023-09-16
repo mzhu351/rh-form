@@ -1,5 +1,6 @@
 import { FormView } from "./FormView";
-import { TextField } from "./Fields/TextField";
+import { TextField, RadioGroupField } from "./Fields";
+import { genderOptions } from "./constants";
 
 export const StepOne = () => {
 	return (
@@ -15,18 +16,11 @@ export const StepTwo = () => {
 		<FormView title="User Details">
 			<TextField label="First Name" name="firstName" />
 
-			<h6 style={{ fontWeight: "700" }}>Gender</h6>
-			<div style={{ display: "flex", marginBottom: "20px" }}>
-				<div style={{ marginRight: "20px" }}>
-					<input type="radio" id="female" name="gender" />
-					<label htmlFor="gender">Male</label>
-				</div>
-
-				<div>
-					<input type="radio" id="female" name="gender" />
-					<label htmlFor="gender">Female</label>
-				</div>
-			</div>
+			<RadioGroupField
+				name="gender"
+				groupLabel="Gender"
+				options={genderOptions}
+			/>
 
 			<TextField label="Age (optional)" name="age" type="number" />
 		</FormView>
