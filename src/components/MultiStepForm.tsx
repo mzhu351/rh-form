@@ -1,6 +1,7 @@
+import * as React from "react";
 import Button from "react-bootstrap/Button";
 import Stack from "react-bootstrap/Stack";
-import { Formik, FormikProps } from "formik";
+import { Formik, Form, FormikProps } from "formik";
 
 import { FormView } from "./FormView";
 import { STEPS_MAP, QUESTIONS_MAP as questionMap } from "./constants";
@@ -11,11 +12,17 @@ import { IFormValues } from "./types";
 
 export const MultiStepForm = () => {
 	const steps = STEPS_MAP["test1"];
+	const formRef = React.useRef<FormikProps<IFormValues>>(null);
+
+	React.useEffect(() => {
+		console.log("formRef::", formRef.current);
+	}, []);
 
 	const { activeQuestion, isFirst, isLast, goNext, goBack, reset } =
 		useQuestions(steps, questionMap);
 
 	const handleBack = async () => {
+		// discard changes on current question
 		goBack();
 	};
 
@@ -24,25 +31,34 @@ export const MultiStepForm = () => {
 		reset();
 	};
 
-	const handleSubmit = async (
-		formikProps: FormikProps<IFormValues>,
-		shouldGoNext = false
-	) => {
-		const { values, isValid } = formikProps;
-		if (shouldGoNext) {
-			if (isValid) {
+	const handleSubmit = (values: IFormValues) => {
+		console.log("35, handleSubmit: values", values);
+
+		if (!isLast) {
+			if (formRef.current?.isValid) {
+				console.log("go next");
 				goNext();
 			}
 		} else {
 			// todo; get from SessionStorageFull value and display on alert
-			alert(JSON.stringify(values));
+			if (formRef.current?.isValid) {
+				console.log("mark submit");
+				alert(JSON.stringify(values));
+			}
 		}
 	};
 
 	const initialValues = {
-		[activeQuestion?.name]: "",
+		username: "",
+		email: "",
+		firstName: "",
+		gender: "",
+		age: undefined,
+		street: "",
+		state: "",
+		zip: undefined,
 	};
-	console.log("initialValues::", initialValues);
+
 	const currentSchema = activeQuestion
 		? getValidationSchema(activeQuestion)
 		: null;
@@ -56,12 +72,12 @@ export const MultiStepForm = () => {
 			<Formik
 				initialValues={initialValues}
 				validationSchema={currentSchema}
-				validateOnChange={false}
-				onSubmit={() => {}}
+				onSubmit={handleSubmit}
+				innerRef={formRef}
 			>
 				{(props: FormikProps<IFormValues>) => {
 					return (
-						<form auto-complete="false">
+						<Form>
 							<FormView question={activeQuestion} />
 
 							<Stack direction="horizontal" gap={3}>
@@ -79,14 +95,11 @@ export const MultiStepForm = () => {
 									Reset
 								</Button>
 
-								<Button
-									variant="primary"
-									onClick={() => handleSubmit(props, !isLast)}
-								>
+								<Button variant="primary" type="submit">
 									{isLast ? "Submit" : "Next"}
 								</Button>
 							</Stack>
-						</form>
+						</Form>
 					);
 				}}
 			</Formik>

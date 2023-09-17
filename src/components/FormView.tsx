@@ -21,7 +21,6 @@ const getInputField = (question: IQuestion) => {
 };
 
 export const FormView = ({ question }: IFormViewProps) => {
-	console.log("23::question::", question);
 	return (
 		<div>
 			<h3
