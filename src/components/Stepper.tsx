@@ -1,8 +1,8 @@
 import { IStepperProps } from "./types";
-import { flowUtil } from "./hooks";
+import { util } from "./hooks";
 
 export const Stepper = ({ steps, questionId }: IStepperProps) => {
-	const activeStep = flowUtil.getStepByQuestionId(steps, questionId);
+	const activeStep = util.getStepByQuestionId(steps, questionId);
 	const stepIndex = steps.findIndex((step) => step.id === activeStep.id);
 
 	return (

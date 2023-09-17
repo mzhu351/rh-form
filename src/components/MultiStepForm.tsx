@@ -5,58 +5,63 @@ import { Formik, Form, FormikProps } from "formik";
 
 import { FormView } from "./FormView";
 import { STEPS_MAP, QUESTIONS_MAP as questionMap } from "./constants";
-import { useQuestions } from "./hooks";
+import { useQuestions, useSession } from "./hooks";
 import { Stepper } from "./Stepper";
 import { getValidationSchema } from "./validation-schema";
 import { IFormValues } from "./types";
+
+const initialValues = {
+	username: "",
+	email: "",
+	firstName: "",
+	gender: "",
+	age: undefined,
+	street: "",
+	state: "",
+	zip: undefined,
+};
+
+// const mapFormToModel = (values: IFormvV)
 
 export const MultiStepForm = () => {
 	const steps = STEPS_MAP["test1"];
 	const formRef = React.useRef<FormikProps<IFormValues>>(null);
 
-	React.useEffect(() => {
-		console.log("formRef::", formRef.current);
-	}, []);
+	const { activeQuestion, isFirst, isLast, goNext, goBack } = useQuestions(
+		steps,
+		questionMap
+	);
 
-	const { activeQuestion, isFirst, isLast, goNext, goBack, reset } =
-		useQuestions(steps, questionMap);
+	const { value: formData, setValue: saveData } = useSession(
+		"test1",
+		initialValues
+	);
 
 	const handleBack = async () => {
 		// discard changes on current question
 		goBack();
 	};
 
-	const handleReset = async () => {
-		// reset form=> wipe out sessionStorage and go back
-		reset();
+	const handleSkip = async () => {
+		// for optional
+		goNext();
 	};
 
-	const handleSubmit = (values: IFormValues) => {
+	const handleSubmit = async (values: IFormValues) => {
 		console.log("35, handleSubmit: values", values);
 
 		if (!isLast) {
 			if (formRef.current?.isValid) {
-				console.log("go next");
+				saveData(values);
 				goNext();
 			}
 		} else {
-			// todo; get from SessionStorageFull value and display on alert
 			if (formRef.current?.isValid) {
 				console.log("mark submit");
-				alert(JSON.stringify(values));
+				saveData(values);
+				alert(formData);
 			}
 		}
-	};
-
-	const initialValues = {
-		username: "",
-		email: "",
-		firstName: "",
-		gender: "",
-		age: undefined,
-		street: "",
-		state: "",
-		zip: undefined,
 	};
 
 	const currentSchema = activeQuestion
@@ -87,13 +92,15 @@ export const MultiStepForm = () => {
 									</Button>
 								)}
 
-								<Button
-									variant="link"
-									className="ms-auto"
-									onClick={handleReset}
-								>
-									Reset
-								</Button>
+								{!activeQuestion.isRequired && (
+									<Button
+										variant="link"
+										className="ms-auto"
+										onClick={handleSkip}
+									>
+										Skip
+									</Button>
+								)}
 
 								<Button variant="primary" type="submit">
 									{isLast ? "Submit" : "Next"}
