@@ -10,7 +10,7 @@ export const getCongiuredQuestions = (
 	steps.forEach((step) => {
 		step.questions.forEach((questionId) => questionIds.push(questionId));
 	});
-	console.log("questionIds::", questionIds);
+
 	questionMap.forEach((qItem) => {
 		questionIds.forEach((questionId: string) => {
 			if (questionId === qItem.id) {

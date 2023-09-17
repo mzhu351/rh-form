@@ -15,8 +15,13 @@ export const useSession = (key: string, defaultValue?: any) => {
 		sessionStorage.setItem(key, JSON.stringify(value));
 	}, [key, value]);
 
+	const clear = (key: string) => {
+		sessionStorage.removeItem(key);
+	};
+
 	return {
 		value,
 		setValue,
+		clear,
 	};
 };

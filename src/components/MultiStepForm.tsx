@@ -22,15 +22,20 @@ const initialValues = {
 export const MultiStepForm = () => {
 	const steps = STEPS_MAP["test1"];
 
-	const { activeQuestion, isFirst, isLast, goNext, goBack } = useQuestions(
-		steps,
-		questionMap
-	);
+	const {
+		activeQuestion,
+		isFirst,
+		isLast,
+		goNext,
+		goBack,
+		reset: goBackFirstField,
+	} = useQuestions(steps, questionMap);
 
-	const { value: formData, setValue: saveData } = useSession(
-		"test1",
-		initialValues
-	);
+	const {
+		value: formData,
+		setValue: saveData,
+		clear: clearData,
+	} = useSession("test1", initialValues);
 
 	const handleBack = async () => {
 		// discard changes on current question
@@ -42,7 +47,16 @@ export const MultiStepForm = () => {
 		goNext();
 	};
 
+	const handleReset = async (props: FormikProps<IFormValues>) => {
+		// reset form and clear sessionStorage
+		clearData("test1");
+		props.resetForm();
+		// go back to first page
+		goBackFirstField();
+	};
+
 	const handleSubmit = async (values: IFormValues) => {
+		// formik won't allow sumbit with invalid form
 		if (!isLast) {
 			saveData(values);
 			goNext();
@@ -65,9 +79,11 @@ export const MultiStepForm = () => {
 			<Formik
 				initialValues={formData || initialValues}
 				validationSchema={currentSchema}
+				enableReintialize
 				onSubmit={handleSubmit}
 			>
 				{(props: FormikProps<IFormValues>) => {
+					console.log("props::", props);
 					return (
 						<Form>
 							<Container>
@@ -78,9 +94,17 @@ export const MultiStepForm = () => {
 								<Row>
 									<Col>
 										{!isFirst && (
-											<Button variant="outline-primary" onClick={handleBack}>
-												Back
-											</Button>
+											<>
+												<Button variant="outline-primary" onClick={handleBack}>
+													Back
+												</Button>
+												<Button
+													variant="link"
+													onClick={() => handleReset(props)}
+												>
+													Reset
+												</Button>
+											</>
 										)}
 									</Col>
 

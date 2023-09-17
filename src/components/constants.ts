@@ -64,7 +64,7 @@ export const QUESTIONS_MAP = [
 	{
 		id: "age",
 		name: "age",
-		label: "Age",
+		label: "Age (optional)",
 		type: "number",
 		isRequired: false,
 		title: "How old are you?",
@@ -72,7 +72,7 @@ export const QUESTIONS_MAP = [
 	{
 		id: "street",
 		name: "street",
-		label: "Street",
+		label: "Street (optional)",
 		type: "text",
 		isRequired: false,
 		title: "Which street do you live?",
@@ -80,7 +80,7 @@ export const QUESTIONS_MAP = [
 	{
 		id: "state",
 		name: "state",
-		label: "State",
+		label: "State (optional)",
 		type: "text",
 		isRequired: false,
 		title: "Which state do you live?",
