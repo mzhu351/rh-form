@@ -1,76 +1,58 @@
 import Button from "react-bootstrap/Button";
 import Stack from "react-bootstrap/Stack";
-
-import { StepOne, StepTwo, StepThree } from "./Steps";
-import { useSteps } from "./useSteps";
 import { Formik, FormikProps } from "formik";
-import { validationSchema } from "./validation-schema";
+
+import { FormView } from "./FormView";
+import { STEPS_MAP, QUESTIONS_MAP as questionMap } from "./constants";
+import { useQuestions } from "./hooks";
+import { Stepper } from "./Stepper";
+import { getValidationSchema } from "./validation-schema";
 import { IFormValues } from "./types";
 
-const initialValues = {
-	username: "",
-	email: "",
-	firstName: "",
-	gender: "",
-};
-
-const steps = ["stepOne", "stepTwo", "stepThree"];
-
-const getStep = (stepIndex: number) => {
-	switch (stepIndex) {
-		case 0:
-			return <StepOne />;
-		case 1:
-			return <StepTwo />;
-		case 2:
-			return <StepThree />;
-		default:
-			return "unknown step";
-	}
-};
-
 export const MultiStepForm = () => {
-	const { activeStep, isFirst, isLast, goNext, goBack, reset } =
-		useSteps(steps);
+	const steps = STEPS_MAP["test1"];
 
-	const handleNext = async (formikProps: FormikProps<IFormValues>) => {
-		const { values, validateForm, isValid, errors } = formikProps;
-		await validateForm(values);
-
-		console.log("errors:::", errors);
-
-		if (isValid) {
-			goNext();
-		}
-	};
+	const { activeQuestion, isFirst, isLast, goNext, goBack, reset } =
+		useQuestions(steps, questionMap);
 
 	const handleBack = async () => {
-		console.log("handle back");
 		goBack();
 	};
 
 	const handleReset = async () => {
-		console.log("handle reset");
+		// reset form=> wipe out sessionStorage and go back
 		reset();
 	};
 
-	const handleSubmit = async (values: IFormValues) => {
-		console.log(JSON.stringify(values));
-		alert(JSON.stringify(values));
+	const handleSubmit = async (
+		formikProps: FormikProps<IFormValues>,
+		shouldGoNext = false
+	) => {
+		const { values, isValid } = formikProps;
+		if (shouldGoNext) {
+			if (isValid) {
+				goNext();
+			}
+		} else {
+			// todo; get from SessionStorageFull value and display on alert
+			alert(JSON.stringify(values));
+		}
 	};
 
-	const currentSchema = validationSchema[activeStep];
-	console.log("currentStep::", activeStep);
+	const initialValues = {
+		[activeQuestion?.name]: "",
+	};
+	console.log("initialValues::", initialValues);
+	const currentSchema = activeQuestion
+		? getValidationSchema(activeQuestion)
+		: null;
 
-	return (
+	return activeQuestion ? (
 		<div>
-			<div
-				id="status-display"
-				style={{ position: "absolute", top: "1rem", right: "1rem" }}
-			>
-				Step {activeStep + 1} / {steps.length}
-			</div>
+			{/* Stepper */}
+			<Stepper steps={steps} questionId={activeQuestion?.id} />
 
+			{/* Form */}
 			<Formik
 				initialValues={initialValues}
 				validationSchema={currentSchema}
@@ -79,8 +61,8 @@ export const MultiStepForm = () => {
 			>
 				{(props: FormikProps<IFormValues>) => {
 					return (
-						<form>
-							{getStep(activeStep)}
+						<form auto-complete="false">
+							<FormView question={activeQuestion} />
 
 							<Stack direction="horizontal" gap={3}>
 								{!isFirst && (
@@ -97,22 +79,17 @@ export const MultiStepForm = () => {
 									Reset
 								</Button>
 
-								{isLast ? (
-									<Button variant="primary" onClick={() => handleSubmit}>
-										Submit
-									</Button>
-								) : (
-									<>
-										<Button variant="primary" onClick={() => handleNext(props)}>
-											Next
-										</Button>
-									</>
-								)}
+								<Button
+									variant="primary"
+									onClick={() => handleSubmit(props, !isLast)}
+								>
+									{isLast ? "Submit" : "Next"}
+								</Button>
 							</Stack>
 						</form>
 					);
 				}}
 			</Formik>
 		</div>
-	);
+	) : null;
 };

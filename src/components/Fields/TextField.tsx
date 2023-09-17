@@ -1,6 +1,8 @@
 import { Field, FieldProps } from "formik";
 
-export const TextField = (props: any) => {
+import { IFieldProps } from "../types";
+
+export const TextField = (props: IFieldProps) => {
 	return (
 		<div style={{ marginBottom: "20px", marginRight: "10px" }}>
 			<Field {...props}>

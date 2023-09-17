@@ -1,3 +1,5 @@
+import { IStep, IQuestion } from "./types";
+
 export const genderOptions = [
 	{
 		id: "male",
@@ -9,6 +11,85 @@ export const genderOptions = [
 	},
 ];
 
-export const STEP_QUESTION_MAP = [];
+export const STEPS_MAP = {
+	test1: [
+		{ id: "login", label: "Step Login", questions: ["username", "email"] },
+		{
+			id: "person",
+			label: "Step Person",
+			questions: ["firstName", "gender", "age"],
+		},
+		{
+			id: "address",
+			label: "Step Address",
+			questions: ["street", "state", "zip"],
+		},
+	] as IStep[],
+};
 
-export const QUESTIONS_MAP = {};
+export const QUESTIONS_MAP = [
+	{
+		id: "username", // can use for route param
+		name: "username",
+		label: "Username",
+		type: "text",
+		isRequired: true,
+		title: "Registered username",
+	},
+	{
+		id: "email",
+		name: "email",
+		label: "Email",
+		type: "text",
+		isRequired: true,
+		title: "Registered email",
+	},
+	{
+		id: "first-name",
+		label: "First Name",
+		type: "text",
+		isRequired: true,
+		title: "What others call you",
+	},
+	{
+		id: "gender",
+		name: "gender",
+		label: "Gender",
+		type: "radioGroup",
+		options: genderOptions,
+		isRequired: true,
+		title: "You identify as",
+	},
+	{
+		id: "age",
+		name: "age",
+		label: "Age",
+		type: "number",
+		isRequired: false,
+		title: "How old are you?",
+	},
+	{
+		id: "street",
+		name: "street",
+		label: "Street",
+		type: "text",
+		isRequired: false,
+		title: "Which street do you live?",
+	},
+	{
+		id: "state",
+		name: "state",
+		label: "State",
+		type: "text",
+		isRequired: false,
+		title: "Which state do you live?",
+	},
+	{
+		id: "zip-code",
+		name: "zip",
+		label: "Zip Code",
+		type: "number",
+		isRequired: false,
+		title: "Your mailing zip code",
+	},
+] as IQuestion[];
