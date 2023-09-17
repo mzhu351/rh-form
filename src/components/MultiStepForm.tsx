@@ -1,6 +1,5 @@
-import * as React from "react";
 import Button from "react-bootstrap/Button";
-import Stack from "react-bootstrap/Stack";
+import { Container, Row, Col } from "react-bootstrap";
 import { Formik, Form, FormikProps } from "formik";
 
 import { FormView } from "./FormView";
@@ -18,14 +17,10 @@ const initialValues = {
 	age: undefined,
 	street: "",
 	state: "",
-	zip: undefined,
 };
-
-// const mapFormToModel = (values: IFormvV)
 
 export const MultiStepForm = () => {
 	const steps = STEPS_MAP["test1"];
-	const formRef = React.useRef<FormikProps<IFormValues>>(null);
 
 	const { activeQuestion, isFirst, isLast, goNext, goBack } = useQuestions(
 		steps,
@@ -48,19 +43,12 @@ export const MultiStepForm = () => {
 	};
 
 	const handleSubmit = async (values: IFormValues) => {
-		console.log("35, handleSubmit: values", values);
-
 		if (!isLast) {
-			if (formRef.current?.isValid) {
-				saveData(values);
-				goNext();
-			}
+			saveData(values);
+			goNext();
 		} else {
-			if (formRef.current?.isValid) {
-				console.log("mark submit");
-				saveData(values);
-				alert(formData);
-			}
+			saveData(values);
+			alert(JSON.stringify(formData));
 		}
 	};
 
@@ -75,37 +63,40 @@ export const MultiStepForm = () => {
 
 			{/* Form */}
 			<Formik
-				initialValues={initialValues}
+				initialValues={formData || initialValues}
 				validationSchema={currentSchema}
 				onSubmit={handleSubmit}
-				innerRef={formRef}
 			>
 				{(props: FormikProps<IFormValues>) => {
 					return (
 						<Form>
-							<FormView question={activeQuestion} />
+							<Container>
+								<Row>
+									<FormView question={activeQuestion} />
+								</Row>
 
-							<Stack direction="horizontal" gap={3}>
-								{!isFirst && (
-									<Button variant="outline-primary" onClick={handleBack}>
-										Back
-									</Button>
-								)}
+								<Row>
+									<Col>
+										{!isFirst && (
+											<Button variant="outline-primary" onClick={handleBack}>
+												Back
+											</Button>
+										)}
+									</Col>
 
-								{!activeQuestion.isRequired && (
-									<Button
-										variant="link"
-										className="ms-auto"
-										onClick={handleSkip}
-									>
-										Skip
-									</Button>
-								)}
+									<Col style={{ display: "flex", justifyContent: "flex-end" }}>
+										{!activeQuestion.isRequired && !isLast && (
+											<Button variant="link" onClick={handleSkip}>
+												Skip
+											</Button>
+										)}
 
-								<Button variant="primary" type="submit">
-									{isLast ? "Submit" : "Next"}
-								</Button>
-							</Stack>
+										<Button variant="primary" type="submit">
+											{isLast ? "Submit" : "Next"}
+										</Button>
+									</Col>
+								</Row>
+							</Container>
 						</Form>
 					);
 				}}

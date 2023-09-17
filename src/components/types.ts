@@ -6,7 +6,6 @@ export interface IFormValues {
 	age?: number;
 	street?: string;
 	state?: string;
-	zip?: string;
 }
 
 type IdLabel = {

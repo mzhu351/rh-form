@@ -7,7 +7,7 @@ function App() {
 				position: "relative",
 				background: "white",
 				border: "2px solid LightGray",
-				padding: "2rem",
+				padding: "2rem 1rem",
 				margin: "1rem",
 				borderRadius: ".5rem",
 				fontFamily: "Arial",

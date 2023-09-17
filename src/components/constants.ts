@@ -22,7 +22,7 @@ export const STEPS_MAP = {
 		{
 			id: "address",
 			label: "Step Address",
-			questions: ["street", "state", "zip"],
+			questions: ["street", "state"],
 		},
 	] as IStep[],
 };
@@ -46,6 +46,7 @@ export const QUESTIONS_MAP = [
 	},
 	{
 		id: "first-name",
+		name: "firstName",
 		label: "First Name",
 		type: "text",
 		isRequired: true,
@@ -83,13 +84,5 @@ export const QUESTIONS_MAP = [
 		type: "text",
 		isRequired: false,
 		title: "Which state do you live?",
-	},
-	{
-		id: "zip-code",
-		name: "zip",
-		label: "Zip Code",
-		type: "number",
-		isRequired: false,
-		title: "Your mailing zip code",
 	},
 ] as IQuestion[];
