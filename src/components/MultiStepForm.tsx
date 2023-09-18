@@ -3,11 +3,11 @@ import { Container, Row, Col } from "react-bootstrap";
 import { Formik, Form, FormikProps } from "formik";
 
 import { FormView } from "./FormView";
-import { STEPS_MAP, QUESTIONS_MAP as questionMap } from "./constants";
-import { useQuestions, useSession } from "./hooks";
+import { STEPS_MAP, QUESTIONS_MAP as questionMap } from "../shared/constants";
+import { useQuestions, useSession } from "../shared/hooks";
 import { Stepper } from "./Stepper";
 import { getValidationSchema } from "./validation-schema";
-import { IFormValues } from "./types";
+import { IFormValues, IMultiStepFormProps } from "./types";
 
 const initialValues = {
 	username: "",
@@ -19,7 +19,7 @@ const initialValues = {
 	state: "",
 };
 
-export const MultiStepForm = () => {
+export const MultiStepForm = ({ questionId }: IMultiStepFormProps) => {
 	const steps = STEPS_MAP["test1"];
 
 	const {

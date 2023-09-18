@@ -1,22 +1,17 @@
-import { MultiStepForm } from "./components";
+import { HashRouter, Route, Routes } from "react-router-dom";
 
-function App() {
+import { Home, FormContainer as Form, Question } from "./routes";
+
+export const App = () => {
 	return (
-		<div
-			style={{
-				position: "relative",
-				background: "white",
-				border: "2px solid LightGray",
-				padding: "2rem 1rem",
-				margin: "1rem",
-				borderRadius: ".5rem",
-				fontFamily: "Arial",
-				maxWidth: "max-content",
-			}}
-		>
-			<MultiStepForm />
+		<div className="App">
+			<HashRouter>
+				<Routes>
+					<Route path="/" element={<Home />} />
+					<Route path="/form" element={<Form />} />
+					<Route path="form/:id" element={<Question />} />
+				</Routes>
+			</HashRouter>
 		</div>
 	);
-}
-
-export default App;
+};

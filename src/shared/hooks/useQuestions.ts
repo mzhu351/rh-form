@@ -1,13 +1,20 @@
 import { useState } from "react";
 
-import { IStep, IQuestion } from "../types";
+import { IStep, IQuestion } from "../../components/types";
 
-import { getCongiuredQuestions } from "./util";
+import { getCongiuredQuestions } from "../util";
 
-export const useQuestions = (steps: IStep[], questionMap: IQuestion[]) => {
-	const [activeQuestionIdx, setActiveQuestionIdx] = useState(0);
-
+export const useQuestions = (
+	steps: IStep[],
+	questionMap: IQuestion[],
+	urlParamId?: string
+) => {
+	// figure out urlParamId's index
 	const questions = getCongiuredQuestions(steps, questionMap);
+
+	const paramIdIdx = 0;
+
+	const [activeQuestionIdx, setActiveQuestionIdx] = useState(paramIdIdx);
 
 	const goNext = () => {
 		setActiveQuestionIdx((i) => {

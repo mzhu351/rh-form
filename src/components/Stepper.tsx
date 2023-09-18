@@ -1,5 +1,5 @@
 import { IStepperProps } from "./types";
-import { util } from "./hooks";
+import { util } from "../shared";
 
 export const Stepper = ({ steps, questionId }: IStepperProps) => {
 	const activeStep = util.getStepByQuestionId(steps, questionId);

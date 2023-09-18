@@ -53,3 +53,7 @@ export interface IStepperProps {
 export interface IFormViewProps {
 	question: IQuestion;
 }
+
+export interface IMultiStepFormProps {
+	questionId?: string;
+}

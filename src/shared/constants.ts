@@ -1,4 +1,4 @@
-import { IStep, IQuestion } from "./types";
+import { IStep, IQuestion } from "../components/types";
 
 export const genderOptions = [
 	{
