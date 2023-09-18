@@ -55,5 +55,5 @@ export interface IFormViewProps {
 }
 
 export interface IMultiStepFormProps {
-	questionId?: string;
+	paramId?: string;
 }

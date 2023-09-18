@@ -1,6 +1,6 @@
 import { HashRouter, Route, Routes } from "react-router-dom";
 
-import { Home, FormContainer as Form, Question } from "./routes";
+import { Home, Question } from "./routes";
 
 export const App = () => {
 	return (
@@ -8,8 +8,8 @@ export const App = () => {
 			<HashRouter>
 				<Routes>
 					<Route path="/" element={<Home />} />
-					<Route path="/form" element={<Form />} />
-					<Route path="form/:id" element={<Question />} />
+					<Route path="/questions" element={<Question />} />
+					<Route path="questions/:id" element={<Question />} />
 				</Routes>
 			</HashRouter>
 		</div>

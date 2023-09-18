@@ -3,7 +3,11 @@ import { Container, Row, Col } from "react-bootstrap";
 import { Formik, Form, FormikProps } from "formik";
 
 import { FormView } from "./FormView";
-import { STEPS_MAP, QUESTIONS_MAP as questionMap } from "../shared/constants";
+import {
+	STEPS_MAP,
+	QUESTIONS_MAP as questionMap,
+	testVersion,
+} from "../shared/constants";
 import { useQuestions, useSession } from "../shared/hooks";
 import { Stepper } from "./Stepper";
 import { getValidationSchema } from "./validation-schema";
@@ -19,8 +23,8 @@ const initialValues = {
 	state: "",
 };
 
-export const MultiStepForm = ({ questionId }: IMultiStepFormProps) => {
-	const steps = STEPS_MAP["test1"];
+export const MultiStepForm = ({ paramId }: IMultiStepFormProps) => {
+	const steps = STEPS_MAP[testVersion];
 
 	const {
 		activeQuestion,
@@ -29,7 +33,7 @@ export const MultiStepForm = ({ questionId }: IMultiStepFormProps) => {
 		goNext,
 		goBack,
 		reset: goBackFirstField,
-	} = useQuestions(steps, questionMap);
+	} = useQuestions(steps, questionMap, paramId);
 
 	const {
 		value: formData,
@@ -83,7 +87,6 @@ export const MultiStepForm = ({ questionId }: IMultiStepFormProps) => {
 				onSubmit={handleSubmit}
 			>
 				{(props: FormikProps<IFormValues>) => {
-					console.log("props::", props);
 					return (
 						<Form>
 							<Container>

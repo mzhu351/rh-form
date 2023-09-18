@@ -1,5 +1,7 @@
 import { IStep, IQuestion } from "../components/types";
 
+export const testVersion = "test1";
+
 export const genderOptions = [
 	{
 		id: "male",
