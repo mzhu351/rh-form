@@ -1,6 +1,7 @@
 import Button from "react-bootstrap/Button";
 import { Container, Row, Col } from "react-bootstrap";
 import { Formik, Form, FormikProps } from "formik";
+import { useNavigate } from "react-router-dom";
 
 import { FormView } from "./FormView";
 import {
@@ -25,45 +26,39 @@ const initialValues = {
 
 export const MultiStepForm = ({ paramId }: IMultiStepFormProps) => {
 	const steps = STEPS_MAP[testVersion];
+	const navigate = useNavigate();
 
 	const {
-		activeQuestion,
+		questions,
+		activeQuestionId,
+		prevQuestionId,
+		nextQuestionId,
 		isFirst,
 		isLast,
-		goNext,
-		goBack,
-		reset: goBackFirstField,
 	} = useQuestions(steps, questionMap, paramId);
 
-	const {
-		value: formData,
-		setValue: saveData,
-		clear: clearData,
-	} = useSession("test1", initialValues);
+	const { value: formData, setValue: saveData } = useSession(
+		"test1",
+		initialValues
+	);
+
+	const activeQuestion = questions.find((q) => q.id === activeQuestionId);
 
 	const handleBack = async () => {
 		// discard changes on current question
-		goBack();
+		navigate(`/questions/${prevQuestionId}`);
 	};
 
 	const handleSkip = async () => {
 		// for optional
-		goNext();
-	};
-
-	const handleReset = async (props: FormikProps<IFormValues>) => {
-		// reset form and clear sessionStorage
-		clearData("test1");
-		props.resetForm();
-		// go back to first page
-		goBackFirstField();
+		navigate(`/questions/${nextQuestionId}`);
 	};
 
 	const handleSubmit = async (values: IFormValues) => {
 		// formik won't allow sumbit with invalid form
 		if (!isLast) {
 			saveData(values);
-			goNext();
+			navigate(`/questions/${nextQuestionId}`);
 		} else {
 			saveData(values);
 			alert(JSON.stringify(formData));
@@ -100,12 +95,6 @@ export const MultiStepForm = ({ paramId }: IMultiStepFormProps) => {
 											<>
 												<Button variant="outline-primary" onClick={handleBack}>
 													Back
-												</Button>
-												<Button
-													variant="link"
-													onClick={() => handleReset(props)}
-												>
-													Reset
 												</Button>
 											</>
 										)}
