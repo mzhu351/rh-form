@@ -1,15 +1,16 @@
 import { HashRouter, Route, Routes } from "react-router-dom";
 
-import { Home, Question } from "./routes";
+import { Introduction, Question, Completed } from "./routes";
 
 export const App = () => {
 	return (
 		<div className="App">
 			<HashRouter>
 				<Routes>
-					<Route path="/" element={<Home />} />
-					<Route path="/questions" element={<Question />} />
+					<Route path="/" element={<Introduction />} />
+					<Route path="/completed" element={<Completed />} />
 					<Route path="questions/:id" element={<Question />} />
+					<Route path="*" element={<div>Page not found</div>} />
 				</Routes>
 			</HashRouter>
 		</div>

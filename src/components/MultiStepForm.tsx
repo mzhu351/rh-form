@@ -1,15 +1,16 @@
-import Button from "react-bootstrap/Button";
-import { Container, Row, Col } from "react-bootstrap";
-import { Formik, Form, FormikProps } from "formik";
+import { Container, Row, Col, Button } from "react-bootstrap";
+import { Formik, Form } from "formik";
 import { useNavigate } from "react-router-dom";
 
-import { FormView } from "./FormView";
 import {
 	STEPS_MAP,
 	QUESTIONS_MAP as questionMap,
 	testVersion,
-} from "../shared/constants";
-import { useQuestions, useSession } from "../shared/hooks";
+	useQuestions,
+	useSession,
+} from "../shared";
+
+import { FormView } from "./FormView";
 import { Stepper } from "./Stepper";
 import { getValidationSchema } from "./validation-schema";
 import { IFormValues, IMultiStepFormProps } from "./types";
@@ -49,19 +50,18 @@ export const MultiStepForm = ({ paramId }: IMultiStepFormProps) => {
 		navigate(`/questions/${prevQuestionId}`);
 	};
 
-	const handleSkip = async () => {
+	const handleNext = async () => {
 		// for optional
 		navigate(`/questions/${nextQuestionId}`);
 	};
 
 	const handleSubmit = async (values: IFormValues) => {
 		// formik won't allow sumbit with invalid form
+		saveData(values);
 		if (!isLast) {
-			saveData(values);
-			navigate(`/questions/${nextQuestionId}`);
+			handleNext();
 		} else {
-			saveData(values);
-			alert(JSON.stringify(formData));
+			navigate("/completed");
 		}
 	};
 
@@ -81,7 +81,8 @@ export const MultiStepForm = ({ paramId }: IMultiStepFormProps) => {
 				enableReintialize
 				onSubmit={handleSubmit}
 			>
-				{(props: FormikProps<IFormValues>) => {
+				{(props) => {
+					console.log("props", props);
 					return (
 						<Form>
 							<Container>
@@ -102,7 +103,7 @@ export const MultiStepForm = ({ paramId }: IMultiStepFormProps) => {
 
 									<Col style={{ display: "flex", justifyContent: "flex-end" }}>
 										{!activeQuestion.isRequired && !isLast && (
-											<Button variant="link" onClick={handleSkip}>
+											<Button variant="link" onClick={handleNext}>
 												Skip
 											</Button>
 										)}

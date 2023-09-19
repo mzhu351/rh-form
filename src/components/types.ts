@@ -35,6 +35,7 @@ export interface IQuestion {
 	label: string;
 	type: InputType;
 	isRequired?: boolean;
+	customValidation?: boolean;
 	options?: IdLabel[];
 	title: string;
 }

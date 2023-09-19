@@ -31,7 +31,7 @@ export const STEPS_MAP = {
 
 export const QUESTIONS_MAP = [
 	{
-		id: "username", // can use for route param
+		id: "username", // used as route param
 		name: "username",
 		label: "Username",
 		type: "text",
@@ -44,6 +44,7 @@ export const QUESTIONS_MAP = [
 		label: "Email",
 		type: "text",
 		isRequired: true,
+		customValidation: true,
 		title: "Registered email",
 	},
 	{
@@ -69,6 +70,7 @@ export const QUESTIONS_MAP = [
 		label: "Age (optional)",
 		type: "number",
 		isRequired: false,
+		customValidation: true, // older than 16
 		title: "How old are you?",
 	},
 	{

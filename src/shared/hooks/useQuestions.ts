@@ -11,8 +11,6 @@ export const useQuestions = (
 	const questions = getCongiuredQuestions(steps, questionMap);
 
 	const activeIdx = paramId ? questions.findIndex((q) => q.id === paramId) : 0;
-	console.log("paramIdx::", activeIdx);
-
 	const nextIdx = activeIdx >= questions.length - 1 ? activeIdx : activeIdx + 1;
 	const prevIdx = activeIdx <= 0 ? activeIdx : activeIdx - 1;
 
