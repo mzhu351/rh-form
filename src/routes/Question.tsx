@@ -1,9 +1,7 @@
-import { useParams } from "react-router-dom";
-
 import { MultiStepForm } from "../components";
 
+// can add other elements in form pages
 export const Question = () => {
-	const { id } = useParams();
 	return (
 		<div
 			style={{
@@ -16,7 +14,7 @@ export const Question = () => {
 				maxWidth: "max-content",
 			}}
 		>
-			<MultiStepForm paramId={id} />
+			<MultiStepForm />
 		</div>
 	);
 };

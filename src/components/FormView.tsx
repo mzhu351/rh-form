@@ -2,7 +2,7 @@ import { IFormViewProps, IQuestion } from "./types";
 
 import { RadioGroupField, TextField } from "./Fields";
 
-const getInputField = (question: IQuestion) => {
+const getField = (question: IQuestion) => {
 	switch (question.type) {
 		case "radioGroup":
 			return (
@@ -14,7 +14,13 @@ const getInputField = (question: IQuestion) => {
 			);
 		case "text":
 		case "number":
-			return <TextField name={question.name} label={question.label} />;
+			return (
+				<TextField
+					name={question.name}
+					label={question.label}
+					type={question.type}
+				/>
+			);
 		default:
 			return null;
 	}
@@ -39,7 +45,7 @@ export const FormView = ({ question }: IFormViewProps) => {
 					minWidth: "400px",
 				}}
 			>
-				{getInputField(question)}
+				{getField(question)}
 			</div>
 		</div>
 	);

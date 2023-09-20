@@ -6,16 +6,18 @@ export const Completed = () => {
 	const { value } = useSession("test1");
 
 	return (
-		<Container style={{ minWidth: "400px" }}>
+		<Container style={{ maxWidth: "600px" }}>
 			<Row>
 				<Col>
 					<h3 style={{ margin: "60px 0", textAlign: "center" }}>
-						Here is your result
+						Here is your submitted information
 					</h3>
 				</Col>
 			</Row>
 			<Row>
-				<Col>{JSON.stringify(value, null, 2)}</Col>
+				<Col>
+					<pre>{JSON.stringify(value, null, 2)}</pre>
+				</Col>
 			</Row>
 		</Container>
 	);

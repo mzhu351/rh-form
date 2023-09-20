@@ -1,4 +1,5 @@
 export {
+	initialValues,
 	testVersion,
 	genderOptions,
 	STEPS_MAP,

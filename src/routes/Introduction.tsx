@@ -5,12 +5,19 @@ import {
 	STEPS_MAP,
 	QUESTIONS_MAP as questionMap,
 	testVersion,
+	initialValues,
 	useQuestions,
+	useSession,
 } from "../shared";
 
 export const Introduction = () => {
 	const navigate = useNavigate();
-	const { questions } = useQuestions(STEPS_MAP[testVersion], questionMap);
+	const { value: formData } = useSession("test1", initialValues);
+	const { questions } = useQuestions(
+		STEPS_MAP[testVersion],
+		questionMap,
+		formData
+	);
 
 	return (
 		<Container style={{ minWidth: "400px" }}>

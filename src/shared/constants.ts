@@ -2,6 +2,16 @@ import { IStep, IQuestion } from "../components/types";
 
 export const testVersion = "test1";
 
+export const initialValues = {
+	username: "",
+	email: "",
+	gender: "",
+	age: "",
+	sport: "",
+	flower: "",
+	retirementSavings: 0,
+};
+
 export const genderOptions = [
 	{
 		id: "male",
@@ -15,16 +25,20 @@ export const genderOptions = [
 
 export const STEPS_MAP = {
 	test1: [
-		{ id: "login", label: "Step Login", questions: ["username", "email"] },
+		{
+			id: "registration",
+			label: "Step Registration",
+			questions: ["username", "email"], // list of question id
+		},
 		{
 			id: "person",
 			label: "Step Person",
-			questions: ["firstName", "gender", "age"],
+			questions: ["first-name", "gender", "age"],
 		},
 		{
-			id: "address",
-			label: "Step Address",
-			questions: ["street", "state"],
+			id: "preferences",
+			label: "Step Preferences",
+			questions: ["sport", "flower", "retirement-savings"],
 		},
 	] as IStep[],
 };
@@ -41,19 +55,11 @@ export const QUESTIONS_MAP = [
 	{
 		id: "email",
 		name: "email",
-		label: "Email",
+		label: "Email Address",
 		type: "text",
 		isRequired: true,
 		customValidation: true,
 		title: "Registered email",
-	},
-	{
-		id: "first-name",
-		name: "firstName",
-		label: "First Name",
-		type: "text",
-		isRequired: true,
-		title: "What others call you",
 	},
 	{
 		id: "gender",
@@ -74,19 +80,31 @@ export const QUESTIONS_MAP = [
 		title: "How old are you?",
 	},
 	{
-		id: "street",
-		name: "street",
-		label: "Street (optional)",
+		id: "sport", // male only
+		name: "sport",
+		label: "Favorite sport (optional)",
 		type: "text",
 		isRequired: false,
-		title: "Which street do you live?",
+		title: "What sport do you like?",
+		criteria: "sportRule", // remove criteria it will always be shown
 	},
 	{
-		id: "state",
-		name: "state",
-		label: "State (optional)",
+		id: "flower", // female only
+		name: "flower",
+		label: "Favorite flower (optional)",
 		type: "text",
 		isRequired: false,
-		title: "Which state do you live?",
+		title: "What's your favorite flower?",
+		criteria: "flowerRule",
+	},
+	{
+		id: "retirement-savings", // gender not null and age >= 50 only
+		name: "retirementSavings",
+		label: "Retirement savings (optional)",
+		type: "number",
+		isRequired: false,
+		title: "What's your retirement savings?",
+		customValidation: true, // no negatives
+		criteria: "retSavingsRule",
 	},
 ] as IQuestion[];

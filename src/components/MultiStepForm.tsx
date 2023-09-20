@@ -6,6 +6,7 @@ import {
 	STEPS_MAP,
 	QUESTIONS_MAP as questionMap,
 	testVersion,
+	initialValues,
 	useQuestions,
 	useSession,
 } from "../shared";
@@ -13,21 +14,16 @@ import {
 import { FormView } from "./FormView";
 import { Stepper } from "./Stepper";
 import { getValidationSchema } from "./validation-schema";
-import { IFormValues, IMultiStepFormProps } from "./types";
+import { IFormValues } from "./types";
 
-const initialValues = {
-	username: "",
-	email: "",
-	firstName: "",
-	gender: "",
-	age: undefined,
-	street: "",
-	state: "",
-};
-
-export const MultiStepForm = ({ paramId }: IMultiStepFormProps) => {
+export const MultiStepForm = () => {
 	const steps = STEPS_MAP[testVersion];
 	const navigate = useNavigate();
+
+	const { value: formData, setValue: saveData } = useSession(
+		"test1",
+		initialValues
+	);
 
 	const {
 		questions,
@@ -36,12 +32,7 @@ export const MultiStepForm = ({ paramId }: IMultiStepFormProps) => {
 		nextQuestionId,
 		isFirst,
 		isLast,
-	} = useQuestions(steps, questionMap, paramId);
-
-	const { value: formData, setValue: saveData } = useSession(
-		"test1",
-		initialValues
-	);
+	} = useQuestions(steps, questionMap, formData);
 
 	const activeQuestion = questions.find((q) => q.id === activeQuestionId);
 
@@ -58,6 +49,7 @@ export const MultiStepForm = ({ paramId }: IMultiStepFormProps) => {
 	const handleSubmit = async (values: IFormValues) => {
 		// formik won't allow sumbit with invalid form
 		saveData(values);
+
 		if (!isLast) {
 			handleNext();
 		} else {
@@ -79,35 +71,33 @@ export const MultiStepForm = ({ paramId }: IMultiStepFormProps) => {
 				initialValues={formData || initialValues}
 				validationSchema={currentSchema}
 				enableReintialize
+				validateOnChange={false}
 				onSubmit={handleSubmit}
 			>
-				{(props) => {
-					console.log("props", props);
+				{() => {
 					return (
 						<Form>
 							<Container>
+								{/* Form Content secton */}
 								<Row>
 									<FormView question={activeQuestion} />
 								</Row>
 
+								{/* Action buttons */}
 								<Row>
 									<Col>
 										{!isFirst && (
-											<>
-												<Button variant="outline-primary" onClick={handleBack}>
-													Back
-												</Button>
-											</>
+											<Button variant="outline-primary" onClick={handleBack}>
+												Back
+											</Button>
 										)}
 									</Col>
-
 									<Col style={{ display: "flex", justifyContent: "flex-end" }}>
 										{!activeQuestion.isRequired && !isLast && (
 											<Button variant="link" onClick={handleNext}>
 												Skip
 											</Button>
 										)}
-
 										<Button variant="primary" type="submit">
 											{isLast ? "Submit" : "Next"}
 										</Button>

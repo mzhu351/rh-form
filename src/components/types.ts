@@ -4,8 +4,9 @@ export interface IFormValues {
 	firstName?: string;
 	gender?: string;
 	age?: number;
-	street?: string;
-	state?: string;
+	sport?: string;
+	flower?: string;
+	retirementSavings?: number;
 }
 
 type IdLabel = {
@@ -25,6 +26,7 @@ type InputType =
 export interface IFieldProps {
 	name: string;
 	label: string;
+	type?: InputType;
 	options?: IdLabel[];
 	defaultValue?: string;
 }
@@ -38,6 +40,7 @@ export interface IQuestion {
 	customValidation?: boolean;
 	options?: IdLabel[];
 	title: string;
+	criteria?: string;
 }
 
 export interface IStep {
@@ -53,8 +56,4 @@ export interface IStepperProps {
 
 export interface IFormViewProps {
 	question: IQuestion;
-}
-
-export interface IMultiStepFormProps {
-	paramId?: string;
 }

@@ -9,6 +9,10 @@ const customSchemaList = {
 		.nullable()
 		.min(16, "must be older than 16")
 		.max(120, "must be younger than 121"),
+	retirementSavings: Yup.number()
+		.typeError("must be a number")
+		.nullable()
+		.min(0, "can not be negative"),
 };
 
 const getQuestionSchema = (name: string, customValidation?: boolean) => {
