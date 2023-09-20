@@ -9,6 +9,7 @@ import {
 	initialValues,
 	useQuestions,
 	useSession,
+	util,
 } from "../shared";
 
 import { FormView } from "./FormView";
@@ -48,7 +49,8 @@ export const MultiStepForm = () => {
 
 	const handleSubmit = async (values: IFormValues) => {
 		// formik won't allow sumbit with invalid form
-		saveData(values);
+		const updatedValue = util.mapFormToValue(values);
+		await saveData(updatedValue);
 
 		if (!isLast) {
 			handleNext();

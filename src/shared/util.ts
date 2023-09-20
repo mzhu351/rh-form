@@ -65,3 +65,22 @@ export const getStepByQuestionId = (steps: IStep[], questionId: string) => {
 
 	return matchedStep;
 };
+
+export const mapFormToValue = (value: IFormValues) => {
+	// if gender is male, remove flower
+	// if gender is female, remove sports
+	// if no gender or no age or age <= 50, remove ret saving
+	if (value.gender === "male") {
+		value.flower = "";
+	}
+	if (value.gender === "female") {
+		value.sport = "";
+	}
+	if (
+		(!value.gender || !value.age || value.age < 50) &&
+		value.retirementSavings
+	) {
+		value.retirementSavings = undefined;
+	}
+	return value;
+};

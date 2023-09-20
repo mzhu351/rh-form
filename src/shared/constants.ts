@@ -9,7 +9,7 @@ export const initialValues = {
 	age: "",
 	sport: "",
 	flower: "",
-	retirementSavings: 0,
+	retirementSavings: "",
 };
 
 export const genderOptions = [
